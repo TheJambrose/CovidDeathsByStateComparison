@@ -22,6 +22,7 @@
     <form action="stateSelector">
         <label for="stateA">State Option 1</label>
         <select id="stateA">
+            <option value="ETX">ErrorThrower (ETX)</option>
             <option value="AL">Alabama (AL)</option>
             <option value="AK">Alaska (AK)</option>
             <option value="AZ">Arizona (AZ)</option>
@@ -129,8 +130,10 @@
             <option value="WY">Wyoming</option>
         </select>
     </form>
-    <button onclick="compareStates()">Compare States</button>
+    <button onclick="confirmStates()">Confirm Selection</button>
+    <button onclick="makeBothTables()">Generate a Table</button>
     <script src="js/script.js" async defer></script>
+    <section id="tableOutput"></section>
 </body>
 
 </html>

@@ -1,0 +1,39 @@
+/* begin Table Styling */
+
+
+table {
+    border-collapse: collapse;
+    margin: 25px 0;
+    font-size: 0.9em;
+    font-family: sans-serif;
+    min-width: 400px;
+    text-align: center;
+    background-color: ;
+    /* box-shadow: 0 0 20px rgba(0, 0, 0, 0.15); */
+}
+
+table caption {
+    font-size: 1.1em;
+}
+thead tr {
+    background-color: #009879;
+    color: #ffffff;
+    border: 1px solid #009879;
+    /* text-align: left; */
+}
+
+th, td {
+    padding: 12px 15px;
+}
+
+tbody tr {
+    border: 1px solid #009879;
+}
+/* if I ever make this work with larger data sets */
+tbody tr:nth-of-type(even) {
+    background-color: #f3f3f3;
+}
+
+tbody tr:last-of-type {
+    border-bottom: 2px solid #026752;
+}
