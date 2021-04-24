@@ -487,10 +487,10 @@ let exampleTXArr =
         , { "submission_date": "2020-12-18T00:00:00.000", "state": "TX", "tot_cases": "1555981", "new_case": "16792.0", "pnew_case": "3539", "tot_death": "28014", "new_death": "243.0", "pnew_death": "0", "created_at": "2020-12-19T00:00:00.000", "consent_cases": "Not agree", "consent_deaths": "Not agree" }
     ];
 
-//
-function yearMonthDay(anyObj) {
+// take the data for a single state and return an array of objects that have Year, month, and Date of total deaths
+function dailyDeathTotal(singleStateObjArray) {
     let totalDeathByDay = [];
-    anyObj.forEach(subDate => {
+    singleStateObjArray.forEach(subDate => {
         let dirtySubDate = subDate.submission_date;
         //get the year
         let cleanYear = dirtySubDate.substring(0, 4);
@@ -504,7 +504,6 @@ function yearMonthDay(anyObj) {
             "total_deaths": subDate.tot_death
         });
     });
-
     //sort it all by date
     totalDeathByDay.sort(function (a, b) {
         return a.date - b.date;
@@ -517,7 +516,49 @@ function yearMonthDay(anyObj) {
     totalDeathByDay.sort(function (a, b) {
         return a.year - b.year;
     });
-    console.log(totalDeathByDay);
+    return totalDeathByDay;
 }
 
-yearMonthDay(exampleTXArr);
+//takes a single state's daily deaths totals and returns an array of obj similar to {year: '2020', month: '01', monthlyTotal: 1023}
+function monthlyTotalByYear(dailyDeathTotalArrayObj) {
+    let yearAndMonth = [];
+    dailyDeathTotalArrayObj.forEach(yearMonthDate => {
+
+        //create a year and month object with {year: ##,  month: ##, monthlyTotal:0 }
+        if (!yearAndMonth.some(year => year.year == yearMonthDate.year)) {
+            yearAndMonth.push({
+                "year": yearMonthDate.year,
+                "month": yearMonthDate.month,
+                "monthlyTotal": 0
+            });
+        } else if (!yearAndMonth.some(year => year.year == yearMonthDate.year && year.month == yearMonthDate.month)) {
+            yearAndMonth.push({
+                "year": yearMonthDate.year,
+                "month": yearMonthDate.month,
+                "monthlyTotal": 0
+            });
+        }
+    });
+
+    //find the max value for each month by year and assign i to to monthly Total
+    yearAndMonth.forEach(month => {
+        let monthlyTotals = [];
+        //push each total to the monthly totals Array
+        dailyDeathTotalArrayObj.forEach(singleDay => {
+            if (month.year == singleDay.year && month.month == singleDay.month) {
+                monthlyTotals.push(singleDay.total_deaths)
+            }
+        });
+
+        // find the max value since totals for each month are cumulative and return that total to the monthlyTotal property
+        month.monthlyTotal = Math.max(...monthlyTotals);
+    });
+
+    return yearAndMonth;
+};
+
+let allDates = dailyDeathTotal(exampleTXArr);
+let monthlyTotals = monthlyTotalByYear(allDates);
+
+console.log(allDates);
+console.log(monthlyTotals);
