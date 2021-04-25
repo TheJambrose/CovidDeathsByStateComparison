@@ -118,7 +118,10 @@ async function confirmStates() {
     } catch (error) {
         console.log(error);
     }
-    // create visual cue that data was successfully
+    // create visual cue that data was successfully and
+    // enable TableGen Button
+    let tableGenBut = document.getElementById("tableGen");
+    tableGenBut.disabled = false;
 }
 function makeBothTables() {
     stateADaily = dailyDeathTotal(stateObjA);
@@ -298,4 +301,16 @@ function combineNYandNYC(NyTotals, NycTotals) {
             }
         })
     })
+};
+
+function reset() {
+    let tableDispay = document.getElementById("tableOutput");
+    tableDispay.innerHTML = "";
+    stateA = "";
+    stateB = "";
+    stateObjA = [];
+    stateObjB = [];
+    let tableGenBut = document.getElementById("tableGen");
+    tableGenBut.disabled = true;
+
 };
